@@ -1,0 +1,64 @@
+name: Autograding Tests
+on:
+  - push
+  - workflow_dispatch
+  - repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Public Test Case 1
+    - name: Run Public Test Case 1
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Public Test Case 1
+        id: public-test-1
+        command: "java SumProgram"    # Replace with the actual run command
+        input: |
+          1
+          2
+        expected-output: |
+          3
+        comparison-method: exact
+        timeout: 10
+
+    # Private Test Case 2
+    - name: Run Private Test Case 2
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Private Test Case 2
+        id: private-test-2
+        command: "java SumProgram"    # Replace with the actual run command
+        input: |
+          4
+          5
+        expected-output: |
+          9
+        comparison-method: exact
+        timeout: 10
+
+    # Private Test Case 3
+    - name: Run Private Test Case 3
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Private Test Case 3
+        id: private-test-3
+        command: "java SumProgram"    # Replace with the actual run command
+        input: |
+          10
+          20
+        expected-output: |
+          30
+        comparison-method: exact
+        timeout: 10
+
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
